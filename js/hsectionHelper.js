@@ -1,24 +1,23 @@
 
-	var alarms = tizen.alarm.getAll();
-	console.log(alarms.length);
-	if(alarms.length == 0){
-		var alarm = new tizen.AlarmRelative(1 * tizen.alarm.PERIOD_MINUTE);
-		tizen.alarm.add(alarm, "5Ou7t2YkQS.NeuroVibe");
-		generateVibration(true);
-		console.log("The alarm will trigger at " + alarm.getRemainingSeconds());
+//set the correct mode and ON and OFF lengths so the html elements display the correct value
+if(localStorage["mode"]){
+	if(localStorage["mode"] == "training"){
+		document.getElementById("isLearning").checked = true;
+	}else{
+		document.getElementById("isLearning").checked = false;
 	}
 	
-	if(localStorage["onLength"]){
-		var onSelect = document.getElementById("on-length");
-		onSelect.value = localStorage["onLength"];
-		console.log("localStorage value " + localStorage["onLength"] + " select value " + onSelect.value);
-	}
-	if(localStorage["offLength"]){
-		var offSelect = document.getElementById("off-length");
-		offSelect.value = localStorage["offLength"];
-	}
-	
-	
+}
+if(localStorage["onLength"]){
+	var onSelect = document.getElementById("on-length");
+	onSelect.value = localStorage["onLength"];
+}
+if(localStorage["offLength"]){
+	var offSelect = document.getElementById("off-length");
+	offSelect.value = localStorage["offLength"];
+}
+
+
 
 function generateVibration(isAutomatic){
 	
@@ -86,8 +85,6 @@ function generateVibration(isAutomatic){
 	}catch(err){
 		console.log(err.message);
 	}
-	
-	location.reload(true);
 //	if(rand<5){
 //		document.getElementById("private-page").className = "";
 //		document.getElementById("public-page").className = "";
@@ -127,42 +124,56 @@ function imageClicked(id){
 	
 	
 
+	 var generatedNum = sessionStorage.getItem("generatedNumber");
+     var pattern = JSON.parse(localStorage["vibrationPattern"]);
+     var vibrationStr = "[" + pattern.toString() + "]";
+     
+     //current people
+     var people = ["Romit","Bo-Yi","Nirupam","Mahanth","Obama","Michael Jordan", "Bill Gates", "Taylor Swift"];
+     
+     var manualOrAuto = localStorage["manualOrAuto"];
+     var onLength = localStorage["onLength"];
+     var offLength = localStorage["offLength"];
 	
-	
-	var documentsDir, resultFile;
+	 var documentsDir, resultFile;
 	 tizen.filesystem.resolve(
-             'documents',
-             function(dir){
-               documentsDir = dir;
-               
-               try{
-               	resultFile = dir.resolve("vibrationResponse.txt");
-               	console.log("success in resolving the file!")
-               }catch(e){ //file already exists
-               	console.log("Unsuccessful retriving file " + e.message);
-               	resultFile = dir.createFile("vibrationResponse.txt");
-               }
-               
-               if(resultFile != null){
-               	resultFile.openStream(
-               			   //change to a
-                           "w",
-                           function(fs){
-                             var generatedNum = sessionStorage.getItem("generatedNumber");
-                             var select = document.getElementById("recordedResponse");
-                             
-                             fs.write(timeStamp() + ", " + generatedNum + ", " + id + '\r\n');
-                             fs.close();
-                           }, function(e){
-                             console.log("Error " + e.message);
-                           }, "UTF-8"
-                       );
-               }
-               
-             }, function(e) {
-               console.log("Error" + e.message);
-             }, "a"
-     );
+            'documents',
+            function(dir){
+              documentsDir = dir;
+              
+              try{
+              	resultFile = dir.resolve("vibrationResponse.txt");
+              	console.log("success in resolving the file!")
+              }catch(e){ //file already exists
+              	console.log("Unsuccessful retriving file " + e.message);
+              	resultFile = dir.createFile("vibrationResponse.txt");
+              }
+              
+              if(resultFile != null){
+              	resultFile.openStream(
+              			   //change to a
+                          "a",
+                          function(fs){
+                            
+                            fs.write(timeStamp() + ", " + "testing" + ", " + manualOrAuto + ", " + people[generatedNum-1] + ", " + vibrationStr + ", " 
+                           		 + onLength + ", " + offLength + ", " + generatedNum  + ", " + id +  '\r\n');
+                            fs.close();
+                          }, function(e){
+                            console.log("Error " + e.message);
+                          }, "UTF-8"
+                      );
+              }
+              
+            }, function(e) {
+              console.log("Error" + e.message);
+            }, "a"
+    );
+	 
+	localStorage["manualOrAuto"] = "auto";
+	
+	tizen.application.getCurrentApplication().exit();
+	 
+	 
 	 
 	
     
@@ -183,6 +194,15 @@ function changeMode(element){
 			localStorage["mode"] = "test";
 		}
 	}
+}
+
+function toDispatcher(){
+	localStorage["manualOrAuto"] = "manual";
+	window.location.href = "index.html";
+	
+}
+function stopAllAlarms(){
+	tizen.alarm.removeAll();
 }
 
 /**

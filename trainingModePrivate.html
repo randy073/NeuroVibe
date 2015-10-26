@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+	<title>Wearable Extra UI - Section changer</title>
+    <link rel="stylesheet" href="lib/tau/wearable/theme/default/tau.min.css">
+    <link rel="stylesheet" media="all and (-tizen-geometric-shape: circle)" href="lib/tau/wearable/theme/default/tau.circle.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    
+    
+</head>
+<body>
+	<style>
+		.ui-content section {
+			overflow: hidden;
+			overflow-y: auto;
+		}
+		label{
+			margin-top: 50px;
+			width: 80px;
+			
+		}
+		
+		button{
+			margin-bottom: 50px;
+		}
+		
+	</style>
+	
+	
+	<div id="hsectionchangerPage" class="ui-page ui-page-active" data-enable-page-scroll="false">
+	
+	
+		<div id="hsectionchanger" class="ui-content">
+			<!-- section changer has only one child. -->
+			<div>
+				<section style="text-align:center" >
+					<div>
+						<label for="on-length">ON Length: </label>
+						<select id="on-length" onchange="onLengthChanged()">
+							<option value="10">10</option>
+							<option value="20">20</option>
+							<option value="30">30</option>
+							<option value="50">50</option>
+							<option value="100">100</option>
+							<option value="150">150 (default)</option>
+							<option value="200">200</option>
+							<option value="300">300</option>
+							<option value="500">500</option>
+						</select>
+					</div>
+					
+					<div>
+						<label for="off-length">OFF Length: </label>
+						<select id="off-length" onchange="offLengthChanged()">
+							<option value="10">10</option>
+							<option value="20">20</option>
+							<option value="30">30</option>
+							<option value="50">50</option>
+							<option value="150">150 (default)</option>
+							<option value="200">200</option>
+							<option value="300">300</option>
+							<option value="500">500</option>
+						</select>
+					</div>
+					
+				</section>
+				<section style="text-align:center">
+					<div>
+						<button onclick="toDispatcher()">Vibrate</button>
+					</div>
+					<div>
+						<button onclick="stopAllAlarms()">Stop bothering me</button>
+					</div>
+					<div>
+						<label for="isLearning">Training Mode:</label><input type="checkbox" onchange="changeMode(this)" id="isLearning"></input>
+					</div>
+					
+				</section>
+				
+				<section id = "private-page" class="ui-section-active" style="text-align:center">
+					<img id="1"   width="140px" height="140px">
+					<img id="2"   width="140px" height="140px">
+					<img id="3"   width="140px" height="140px">
+					<img id="4"   width="140px" height="140px">
+			</section>
+	
+
+			</div>
+		</div>
+
+	<script src="js/hsection.js"></script>
+	<script src="js/trainingModePrivate.js"></script>
+		
+	</div>
+<script type="text/javascript" src="lib/tau/wearable/js/tau.min.js"></script>
+<script type="text/javascript" src="lib/jquery-1.7.1.min.js"></script>
+
+
+
+
+</body>
+</html>
+
+
+

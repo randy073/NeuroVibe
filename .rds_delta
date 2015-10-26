@@ -1,7 +1,10 @@
 #delete
 #add
 #modify
+res/wgt/.git/FETCH_HEAD
 res/wgt/author-signature.xml
 res/wgt/signature1.xml
-res/wgt/index.html
-res/wgt/js/hsectionHelper.js
+res/wgt/js/dispatcher.js
+res/wgt/testingMode.html
+res/wgt/trainingModePrivate.html
+res/wgt/trainingModePublic.html
